@@ -1,10 +1,9 @@
 import React from 'react'
-import { View, Text } from 'react-native-reanimated/lib/typescript/Animated'
-import "./global.css"
+import { View, Text } from "react-native"
 
 function index() {
   return (
-    <View> <Text> bmko </Text> </View>
+    <View><Text>sasa</Text></View>
   )
 }
 
