@@ -1,10 +1,6 @@
-import React from 'react'
-import { View, Text } from "react-native"
+import { Redirect } from 'expo-router';
 
-function index() {
-  return (
-    <View><Text>sasa</Text></View>
-  )
+export default function Index() {
+  // මේකෙන් වෙන්නේ page එක load වෙද්දීම auto Login එකට යන එක
+  return <Redirect href="/login" />;
 }
-
-export default index

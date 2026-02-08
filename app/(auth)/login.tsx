@@ -1,166 +1,38 @@
-import CustomButton from "@/src/components/CustomButton";
-import InputField from "@/src/components/InputField";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Keyboard,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  Image,
-  ScrollView,
-  Alert,
-} from "react-native";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react-native";
-import { login1, loginWithGoogle } from "@/src/service/AuthService";
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 
-import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import * as AuthSession from "expo-auth-session";
-
-// WebBrowser.maybeCompleteAuthSession();
-
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-
-  const handleFirebaseGoogleLogin = async (idToken: string) => {
-    try {
-      await loginWithGoogle(idToken);
-      Alert.alert("Login successful", "Welcome to Uni-Mart!");
-      router.replace("/home");
-    } catch (error) {
-      console.log("Firebase Google Login Error:", error);
-      Alert.alert("Error", "Failed to sync with Firebase.");
-    }
-  };
-
-  const handleLogin = async () => {
-    if (!email && !password) {
-      Alert.alert("Please fill all the fields");
-      return;
-    }
-    try {
-      await login1(email, password);
-      Alert.alert("Login successful");
-      router.replace("/home");
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Login failed. Please check your credentials and try again.");
-    } finally {
-      console.log("Finized..!");
-    }
-  };
-
+const LoginScreen = ({ navigation }: any) => {
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="justify-center flex-1 px-8 py-10">
-          {/* 1. Header Section */}
-          <View className="items-start mb-10">
-            <Text className="text-4xl font-black text-blue-600">Uni-Mart</Text>
-            <Text className="mt-2 text-lg font-medium text-gray-400">
-              Log in to your campus marketplace
-            </Text>
-          </View>
+    <SafeAreaView className="flex-1 bg-white p-6 justify-center">
+      <Text className="text-4xl font-extrabold text-slate-900 mb-2">Welcome! 🚗</Text>
+      <Text className="text-gray-500 mb-8 text-lg">Sign in to book your next service.</Text>
 
-          {/* 2. Form Section */}
-          <View>
-            <InputField
-              label="University Email"
-              placeholder="e.g. student@uni.ac.lk"
-              value={email}
-              onChangeText={setEmail}
-              icon={<Mail size={20} color="#9CA3AF" />}
-            />
+      <View className="space-y-4">
+        <TextInput 
+          placeholder="Email Address" 
+          className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-slate-800"
+        />
+        <TextInput 
+          placeholder="Password" 
+          secureTextEntry
+          className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-slate-800"
+        />
+        
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('Home')}
+          className="bg-blue-600 p-4 rounded-2xl shadow-lg shadow-blue-400 mt-4"
+        >
+          <Text className="text-white text-center font-bold text-lg">Sign In</Text>
+        </TouchableOpacity>
 
-            <View className="relative">
-              <InputField
-                label="Password"
-                placeholder="Enter your password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!isPasswordVisible}
-                icon={<Lock size={20} color="#9CA3AF" />}
-              />
-              <TouchableOpacity
-                className="absolute right-4 top-11"
-                onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-              >
-                {isPasswordVisible ? (
-                  <EyeOff size={22} color="#9CA3AF" />
-                ) : (
-                  <Eye size={22} color="#9CA3AF" />
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity className="items-end mb-6">
-              <Text className="font-semibold text-blue-600">
-                Forgot Password?
-              </Text>
-            </TouchableOpacity>
-
-            <CustomButton title="Sign In" onPress={handleLogin} />
-          </View>
-
-          {/* 3. Register Link */}
-          <View className="flex-row justify-center mt-8">
-            <Text className="text-gray-500">New to Uni-Mart? </Text>
-            <TouchableOpacity onPress={() => router.push("/register")}>
-              <Text className="font-bold text-blue-600">Create Account</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View className="flex-row items-center my-10">
-            <View className="flex-1 h-[1px] bg-gray-200" />
-            <Text className="mx-4 font-medium text-gray-400">
-              Or continue with
-            </Text>
-            <View className="flex-1 h-[1px] bg-gray-200" />
-          </View>
-
-          {/* 5. Social Login Buttons Section */}
-          <View className="flex-row gap-4">
-            {/* Google Button */}
-            <TouchableOpacity
-              // onPress={() => promptAsync()}
-              activeOpacity={0.8}
-              className="flex-row items-center justify-center flex-1 bg-white border border-gray-100 shadow-sm h-14 rounded-2xl"
-            >
-              <Image
-                source={require("../../assets/images/google-48.png")}
-                className="w-6 h-6"
-                resizeMode="contain"
-              />
-              <Text className="ml-3 font-bold text-gray-700">Google</Text>
-            </TouchableOpacity>
-
-            {/* Facebook Button */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              className="flex-row items-center justify-center flex-1 bg-white border border-gray-100 shadow-sm h-14 rounded-2xl"
-            >
-              <Image
-                source={require("../../assets/images/facebook-48.png")}
-                className="w-6 h-6"
-                resizeMode="contain"
-              />
-              <Text className="ml-3 font-bold text-gray-700">Facebook</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text className="text-center text-gray-500 mt-4">
+            Don't have an account? <Text className="text-blue-600 font-bold">Register</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
-export default Login;
-
+export default LoginScreen;
