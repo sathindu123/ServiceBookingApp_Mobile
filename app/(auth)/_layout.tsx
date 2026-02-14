@@ -1,24 +1,10 @@
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 
-import { Home, ClipboardList, User } from 'lucide-react-native';
-
-export default function TabLayout() {
+export default function AuthLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: '#2563eb', headerShown: false }}>
-      <Tabs.Screen
-        name="dashbord"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color }) => <ClipboardList size={24} color={color} />,
-        }}
-      />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="login" />
+      <Stack.Screen name="register" />
+    </Stack>
   );
 }

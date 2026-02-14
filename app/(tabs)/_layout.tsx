@@ -1,23 +1,40 @@
+
 import { Tabs } from 'expo-router';
-import { Home, ClipboardList, User } from 'lucide-react-native';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function TabLayout() {
+  const tabs = [
+    { name: "home", label: "Home", icon: "storefront" }, 
+    { name: "bookingPage", label: "Booking", icon: "event-note" }, 
+    { name: "profile", label: "Profile", icon: "person" },
+    { name: "history", label: "History", icon: "history" }, 
+  ] as const;
+
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: '#2563eb', headerShown: false }}>
-      <Tabs.Screen
-        name="dashbord"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color }) => <ClipboardList size={24} color={color} />,
-        }}
-      />
+    <Tabs 
+      screenOptions={{ 
+        headerShown: false, 
+        tabBarActiveTintColor: '#2563eb',
+        tabBarInactiveTintColor: '#94a3b8',
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 10,
+          paddingTop: 5,
+        }
+      }}
+    >
+      {tabs.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: tab.label,
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name={tab.icon as any} color={color} size={28} />
+            ),
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
